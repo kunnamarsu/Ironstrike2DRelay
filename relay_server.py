@@ -1,30 +1,3 @@
-"""
-Standalone public relay/matchmaking server for Ironstrike2D co-op - v2.
-
-Same core forwarding logic as before (stamp each message with the sender's
-id, forward it to one player or to everyone else) plus:
-
-  - Three ways a connecting player can be placed:
-      {"t": "quickmatch"}                    -> auto-matched into any open room
-      {"t": "host_room", "name": "..."}      -> creates a NEW, LISTED room
-      {"t": "join_room", "room": <id>}       -> joins a specific room by id
-    The client sends ONE of these as its very first message right after
-    connecting. If nothing arrives within a few seconds (e.g. some other
-    client/tool connects), it falls back to quickmatch so the server never
-    hangs waiting.
-
-  - A plain HTTP GET /rooms returns the currently joinable LISTED rooms as
-    JSON, so the game can show a "Browse Public Servers" screen without
-    needing its own websocket connection just to look.
-
-  - The server peeks at "settings" messages as they pass through (the host
-    already broadcasts these whenever lobby settings change) purely to
-    cache the gamemode/difficulty for display in the room list. It does not
-    otherwise interpret game messages.
-
-Deploy this file + requirements.txt as a Render "Web Service" (Python
-runtime). Render sets $PORT for you - do not hardcode a port.
-"""
 
 import asyncio
 import itertools
